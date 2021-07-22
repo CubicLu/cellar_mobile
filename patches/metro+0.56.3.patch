@@ -1,0 +1,36 @@
+diff --git a/node_modules/metro/src/lib/polyfills/require.js b/node_modules/metro/src/lib/polyfills/require.js
+index 301725c..238adac 100644
+--- a/node_modules/metro/src/lib/polyfills/require.js
++++ b/node_modules/metro/src/lib/polyfills/require.js
+@@ -94,10 +94,10 @@ function metroRequire(moduleId) {
+     if (moduleId == null) {
+       throw new Error(`Unknown named module: "${verboseName}"`);
+     } else {
+-      console.warn(
+-        `Requiring module "${verboseName}" by name is only supported for ` +
+-          "debugging purposes and will BREAK IN PRODUCTION!"
+-      );
++      // console.warn(
++      //   `Requiring module "${verboseName}" by name is only supported for ` +
++      //     "debugging purposes and will BREAK IN PRODUCTION!"
++      // );
+     }
+   } //$FlowFixMe: at this point we know that moduleId is a number
+ 
+@@ -114,11 +114,11 @@ function metroRequire(moduleId) {
+         .map(id => (modules[id] ? modules[id].verboseName : "[unknown]")); // We want to show A -> B -> A:
+ 
+       cycle.push(cycle[0]);
+-      console.warn(
+-        `Require cycle: ${cycle.join(" -> ")}\n\n` +
+-          "Require cycles are allowed, but can result in uninitialized values. " +
+-          "Consider refactoring to remove the need for a cycle."
+-      );
++      // console.warn(
++      //   `Require cycle: ${cycle.join(" -> ")}\n\n` +
++      //     "Require cycles are allowed, but can result in uninitialized values. " +
++      //     "Consider refactoring to remove the need for a cycle."
++      // );
+     }
+   }
+ 

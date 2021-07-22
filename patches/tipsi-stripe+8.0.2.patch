@@ -1,0 +1,11 @@
+diff --git a/node_modules/tipsi-stripe/tipsi-stripe.podspec b/node_modules/tipsi-stripe/tipsi-stripe.podspec
+index 048f719..dcf295b 100644
+--- a/node_modules/tipsi-stripe/tipsi-stripe.podspec
++++ b/node_modules/tipsi-stripe/tipsi-stripe.podspec
+@@ -19,5 +19,5 @@ Pod::Spec.new do |s|
+   s.source_files   = 'ios/TPSStripe/**/*.{h,m}'
+ 
+   s.dependency 'React'
+-  s.dependency 'Stripe', '>= 19.0.1'
++  s.dependency 'Stripe'
+ end

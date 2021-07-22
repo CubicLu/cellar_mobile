@@ -1,0 +1,356 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+interface Tokens {
+    accessToken: String!
+    refreshToken: String!
+}
+
+interface jwtPayload {
+    action: String!
+    email: String!
+    exp: Float!
+    iat: Float!
+    iss: String!
+    sub: String!
+}
+
+union LocaleUnionResponse = AppellationsResponse | CountriesResponse | RegionsResponse | SubregionsResponse
+
+
+type AddOrRemoveBottlesResponse {
+    bottlesInCellar: Int!
+    message: String!
+}
+
+type Appellation {
+    id: Int
+    name: String!
+}
+
+type AppellationsResponse {
+    data: [Appellation!]!
+    marker: String
+}
+
+type Cellar {
+    id: Int!
+    name: String
+}
+
+type CodeVerificationResponse {
+    accessToken: String!
+    refreshToken: String!
+    user: User!
+}
+
+type CountriesResponse {
+    data: [Country!]!
+    marker: String
+}
+
+type Country {
+    id: Int
+    name: String!
+}
+
+type Faq {
+    content: String!
+    createdAt: String!
+    id: Int!
+    title: String!
+    updatedAt: String!
+}
+
+type History {
+    bottleNote: String
+    createdAt: DateTime!
+    deliveryDate: DateTime
+    id: Int!
+    note: String
+    numberOfBottles: Int!
+    purchaseDate: DateTime
+    purchaseNote: String
+    reason: Reasons
+    updatedAt: DateTime!
+    wine: Wine!
+}
+
+type InventoryItem {
+    quantity: Float!
+    wine: Wine!
+}
+
+type Locale {
+    appellation: String
+    country: String
+    region: String
+    subRegion: String
+    subregion: String
+}
+
+type LocaleObject {
+    id: Int
+    name: String!
+}
+
+type LocalesResponse {
+    marker: String
+}
+
+type Mutation {
+    "Request to add or remove the number of bottles. It will affect a current number of wines in user's cellar. A new record will be created in the “history” table."
+    addOrRemoveBottles(date: DateTime!, note: String, numberOfBottles: Int!, reason: Reasons, wineId: Int!): AddOrRemoveBottlesResponse!
+    "The user can add any wine to his wish list."
+    addToWishes(wineId: Int!): String!
+    "If this wine is not exists in the table of wines, then it will be created. A new location will be created in the locales table, if there is no such location. The number of wines will be added to the cellar of the user."
+    addWine(addToWishList: Boolean = false, bottleNote: String, deliveryDate: DateTime, file: Upload, numberOfBottles: Int!, purchaseDate: DateTime!, purchaseNote: String, wine: WineInput!): String!
+    "Sync the inventory with the Cellar Tracker service."
+    cellarTrackerSync(file: Upload!): String!
+    "Code verification by email.If the correct code returns a pair of tokens - accessToken and refreshToken."
+    codeVerification(email: String!, verificationCode: String!): CodeVerificationResponse!
+    "The user can delete any wine from his wish list."
+    deleteFromWishes(wineId: Int!): String!
+    "Delete history record by id."
+    deleteHistory(historyId: Int!): UpdateHistoryResponse!
+    deleteProfile: String!
+    "The text will be recognized by the wine label image in the request. This text will search for the most suitable wine."
+    photoRecognition(file: Upload!): PhotoRecognitionResponse!
+    "Search for wines in the user’s cellar with filters and text search."
+    search(filters: [SearchInventoryFilter!], first: Float = 25.0, marker: String, q: String, skip: Float = 0.0): [InventoryItem!]!
+    "Search for wines in the community inventory with filters and text search."
+    searchCommunity(filters: [SearchInventoryFilter!], first: Float = 25.0, marker: String, q: String, skip: Float = 0.0): SearchResponse!
+    "Search for wines in the user’s cellar with filters and text search."
+    searchInventory(filters: [SearchInventoryFilter!], first: Float = 25.0, marker: String, q: String, skip: Float = 0.0): SearchResponse!
+    "Login via email."
+    signIn(email: String!): String!
+    "Registration a new account"
+    signUp(email: String!): String!
+    token(refreshToken: String!): CodeVerificationResponse!
+    "User can update a quantity, note, date. It will affect a current number of wines in user's cellar."
+    updateHistory(date: DateTime!, historyId: Int!, note: String, numberOfBottles: Int!, reason: Reasons): UpdateHistoryResponse!
+    "User profile update."
+    updateProfile(avatarURL: String, country: String, defaultCurrency: Currencies, email: String, emailVerified: Boolean, favoritePlaceToTravel: String, favoriteWineries: String, file: Upload, firstName: String, firstWine: String, lastName: String, mustGoRestaurant: String, sex: Boolean, subdivision: String): UpdateProfileResponse!
+    "Update wine. The user can specify custom field values."
+    updateWine(appellation: String, country: String, file: Upload, producer: String, region: String, subregion: String, wineId: Int!): String!
+}
+
+type PhotoRecognitionResponse {
+    message: String!
+    rank: Float
+    wineId: Float
+}
+
+type Query {
+    "List of appellations by subregion with a search."
+    appellations(first: Int = 25, marker: String, q: String, skip: Int = 0, subregion: String!): AppellationsResponse!
+    "List of countries with a search."
+    countries(first: Int = 25, marker: String, q: String, skip: Int = 0): CountriesResponse!
+    "Returns list of faqs."
+    faq: [Faq!]!
+    "Will return a list of available filters for wines in the user's cellar. With the number of wines for each filter."
+    filters(title: FilterFields): JSON
+    "Will return a list of available filters for wines in the community inventory. With the number of wines for each filter."
+    filtersCommunity(title: FilterFields): JSON
+    "Find locale by country or region or subregion or appellation."
+    findLocale(appellation: String, country: String, first: Int = 25, marker: String, q: String, region: String, skip: Int = 0, subregion: String): LocaleUnionResponse!
+    profile: User
+    "List of regions by country with a search."
+    regions(country: String!, first: Int = 25, marker: String, q: String, skip: Int = 0): RegionsResponse!
+    "List of subregions by region with a search."
+    subregions(first: Int = 25, marker: String, q: String, region: String!, skip: Int = 0): SubregionsResponse!
+    "Details of wine by its id."
+    wine(wineId: Int!): WineDetailedResponse!
+    "Will return a history for the specific wine by wineId."
+    wineHistory(wineId: Int!): [History!]!
+    "A complete list of wine producers."
+    wineProducers(first: Int = 25, marker: String, q: String, skip: Int = 0): WineProducersResponse!
+    "List of wishes."
+    wishes(first: Float = 25.0, skip: Float = 0.0): [Wine!]
+    "Lisn of Receipts"
+    transactionReceipts(first: Int = 25.0, skip: Int = 0.0): [TransactionReceipt!]!
+    "List of expired Offers"
+    expiredOffers(first: Int = 25.0, skip: Int = 0.0): ExpiredOffers!
+
+}
+
+type Region {
+    id: Int
+    name: String!
+}
+
+type RegionsResponse {
+    data: [Region!]!
+    marker: String
+}
+
+type SearchResponse {
+    data: [InventoryItem!]!
+    marker: String
+}
+
+type Subregion {
+    id: Int
+    name: String!
+}
+type TransactionReceipt { 
+    tradeOfferId: Int!
+    wineId: Int!
+    wineName: String
+    wineTitle: String!
+    quantity: Int
+    pricePerBottle: Float
+    totalPrice: Float
+    isCountered: Boolean
+    updatedAt: DateTime
+    createdAt: DateTime
+    sellerId: Int
+    buyerId: Int
+}
+type ExpiredOffers {
+    expiredOffersToSell: TransactionReceipt
+    expiredOffersToBuy: TransactionReceipt
+}
+
+type SubregionsResponse {
+    data: [Subregion!]!
+    marker: String
+}
+
+type UpdateHistoryResponse {
+    bottlesInCellar: Int!
+    message: String!
+}
+
+type UpdateProfileResponse {
+    message: String!
+    user: User!
+}
+
+type User {
+    avatarURL: String
+    country: String
+    createdAt: String!
+    defaultCurrency: Currencies!
+    email: String!
+    emailVerified: Boolean
+    favoritePlaceToTravel: String
+    favoriteWineries: String
+    firstName: String
+    firstWine: String
+    id: Int!
+    lastName: String
+    mustGoRestaurant: String
+    refreshToken: String
+    sex: Boolean
+    subdivision: String
+    updatedAt: String!
+    verificationCode: String
+}
+
+type Wine {
+    bottleCapacity: String
+    brandName: String
+    color: String
+    currency: String!
+    designation: String
+    id: Int!
+    inWishList: Boolean
+    locale: Locale
+    localeId: Float
+    pictureURL: String
+    price: String
+    producer: String
+    rating: Float
+    upcEarnCode: String
+    varietal: String
+    vintage: String
+    wineType: String
+}
+
+type WineDetailedResponse {
+    price: Float!
+    quantity: Float!
+    rating: Float!
+    reviews: String!
+    wine: Wine!
+}
+
+type WineProducer {
+    id: Int!
+    name: String!
+}
+
+type WineProducersResponse {
+    data: [WineProducer!]!
+    marker: String
+}
+
+"The list of currencies"
+enum Currencies {
+    EUR
+    GBP
+    USD
+}
+
+"The list of valid filter fields"
+enum FilterFields {
+    appellation
+    country
+    producer
+    region
+    subregion
+    varietal
+    vintage
+}
+
+"Reasons to move the wine from the cellar"
+enum Reasons {
+    Consumed
+    Corked_Damaged
+    Donated
+    Gift
+    Missing
+    Sold_Traded
+}
+
+input LocaleInput {
+    appellation: String
+    country: String
+    region: String
+    subRegion: String
+    subregion: String
+}
+
+input SearchInventoryFilter {
+    field: FilterFields!
+    values: [String!]!
+}
+
+input WineInput {
+    bottleCapacity: String
+    brandName: String
+    currency: Currencies
+    designation: String
+    locale: LocaleInput!
+    price: Float = 0.0
+    producer: String!
+    producerId: Int
+    varietal: String
+    vintage: String
+    wineType: String
+}
+
+
+"The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."
+scalar JSON
+
+"The javascript `Date` as string. Type represents date and time as the ISO Date string."
+scalar DateTime
+
+"The `Upload` scalar type represents a file upload."
+scalar Upload

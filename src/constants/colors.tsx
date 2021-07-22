@@ -1,0 +1,17 @@
+export default {
+  gray: 'rgba(38,38,38,1)',
+  darkGray: 'rgba(79,79,79,1)',
+  lightGray: 'rgba(118,118,118,1)',
+  textGray: 'rgba(164,164,164,1)',
+  moreLightGray: 'rgba(240,240,240,1)',
+  dashboardRed: 'rgba(100,9,28,1)',
+  dashboardDarkTab: 'rgba(5,27,30, 1)',
+  orangeDashboard: 'rgba(228, 117, 36, 1)',
+  transparentWhite: 'rgba(255, 255, 255, 0.2)',
+  semiTransWhite: 'rgba(255, 255, 255, 0.5)',
+  inventoryItemBg: 'rgba(4, 27, 30, 1)',
+  borderGreen: 'rgba(53,74,74,1)',
+  darkRedDrawer: 'rgba(80,7,22,1)',
+  inputBorderGrey: 'rgba(102,102,102,1)',
+  inputError: 'rgba(231, 76, 60, 1)',
+};
